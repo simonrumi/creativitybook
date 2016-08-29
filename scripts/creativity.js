@@ -36,8 +36,8 @@ initVis  = function() {
 	var _visContainer = {};
 	var _visData = {};
 	var _visOptions = {
-		width: '800px',
-		height: '600px',
+		width: '100%',
+		height: '100%',
 		physics: {},
 		nodes: {
 			shape: 'circularImage',
@@ -70,6 +70,32 @@ showVis = function() {
 	};
 	_visObject.visContainer = document.getElementById('menu-network');
 	_visObject.visNetwork = new vis.Network(_visObject.visContainer, _visObject.visData, _visObject.visOptions);
+
+	_visObject.visNetwork.on('click', function(clickInfo) {
+
+		// clickInfo looks like this
+		// {
+		// 	nodes: [Array of selected nodeIds],
+		// 	edges: [Array of selected edgeIds],
+		// 	event: [Object] original click event,
+		// 	pointer: {
+		// 		DOM: {x:pointer_x, y:pointer_y},
+		// 		canvas: {x:canvas_x, y:canvas_y}
+		// 	}
+		// }
+		console.log('Got a click, id: ' + clickInfo.nodes + '; mouse position: ' + clickInfo.pointer.DOM.x + ', ' + clickInfo.pointer.DOM.y);
+		showChapter(clickInfo.nodes, _visObject.visData.nodes.getDataSet())
+	});
+}
+
+showChapter = function(chapterId, dataSet) {
+	var item;
+	$('#chapter-' + chapterId).css('display', 'block');
+	for (item in dataSet._data) {
+		if (item != chapterId) {
+			$('#chapter-' + item).css('display', 'none');
+		}
+	}
 }
 
 $(document).ready(function() {
