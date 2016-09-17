@@ -18,6 +18,14 @@ h2 {
 	border: 1px solid lightgray;
 }
 
+#chapter-container {
+	position: relative;
+}
+
 .chapters {
+	position: absolute;
+	left: 0;
+	top: 0;
 	display: none;
+	opacity: 0;
 }
