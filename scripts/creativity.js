@@ -120,18 +120,23 @@ var chapterController = (function() {
 	_showChapter = function(chapterId) {
 		var item;
 		var itemHiding;
+		var verticalOffset = '200px';
 		var dataSet = _visObject.visData.nodes.getDataSet()
+
 		//show the chapter with the given id
-		$('#chapter-' + chapterId).load('chapter-' + chapterId + '.html');
+		$('#chapter-' + itemHiding).css('display', 'none');
+		$('#chapter-' + chapterId).load('chapter-' + chapterId + '.html', function() {
+			_log('loaded html for chapter ' + chapterId);
+		});
 		$('#chapter-' + chapterId).css('display', 'block');
 		$('#chapter-' + chapterId).animate(
 			{
-				opacity: 1.0,
+				opacity: '1.0',
+				top: '0',
 			},
 			1200,
 			function() {
 				// Animation complete.
-				$('#chapter-' + chapterId).css('z-index', '0');
 				_log('completed show-animation for chapter ' + chapterId);
 			}
 		);
@@ -142,7 +147,8 @@ var chapterController = (function() {
 				itemHiding = item;
 				$('#chapter-' + item).animate(
 					{
-						opacity: 0.0,
+						opacity: '0.0',
+						top: verticalOffset,
 					},
 					1200,
 					function() {
