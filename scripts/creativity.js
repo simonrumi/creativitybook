@@ -58,7 +58,7 @@ var chapterController = (function() {
 		_visData = {};
 		_visOptions = {
 			width: '100%',
-			height: '100%',
+			/*height: '20%',*/
 			physics: {},
 			nodes: {
 				shape: 'circularImage',
@@ -121,18 +121,22 @@ var chapterController = (function() {
 		var item;
 		var itemHiding;
 		var verticalOffset = '200px';
+		var startingLeftOffset = '-400px';
+		var endingingLeftOffset = '400px';
 		var dataSet = _visObject.visData.nodes.getDataSet()
 
 		//show the chapter with the given id
-		$('#chapter-' + itemHiding).css('display', 'none');
+		//$('#chapter-' + itemHiding).css('display', 'none');
 		$('#chapter-' + chapterId).load('chapter-' + chapterId + '.html', function() {
 			_log('loaded html for chapter ' + chapterId);
 		});
+		$('#chapter-' + chapterId).css('left', startingLeftOffset);
 		$('#chapter-' + chapterId).css('display', 'block');
 		$('#chapter-' + chapterId).animate(
 			{
 				opacity: '1.0',
 				top: '0',
+				left: '0',
 			},
 			1200,
 			function() {
@@ -148,7 +152,7 @@ var chapterController = (function() {
 				$('#chapter-' + item).animate(
 					{
 						opacity: '0.0',
-						top: verticalOffset,
+						left: endingingLeftOffset,
 					},
 					1200,
 					function() {

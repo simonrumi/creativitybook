@@ -1,5 +1,7 @@
 body {
 	font-family: 'Raleway', sans-serif;
+	font-size: 3.5vw;
+	color: #05343B;
 }
 
 h1 {
@@ -9,17 +11,53 @@ h1 {
 
 h2 {
 	font-family: 'Varela Round', sans-serif;
-	font-size: 1em;
+	font-size: 1.2em;
+
 }
 
+.aqua-gradient {
+	background-image: linear-gradient(
+		rgba(49, 169, 184, 1.0),
+		rgba(49, 169, 184, 0.35) 2%,
+		rgba(49, 169, 184, 0.1)
+	);
+}
+
+.tomato-gradient {
+	background-image: linear-gradient(
+		rgba(207, 53, 33, 1.0),
+		rgba(207, 53, 33, 0.35) 2%,
+		rgba(207, 53, 33, 0.1)
+	);
+}
+
+.avocado-gradient {
+	background-image: linear-gradient(
+		rgba(37, 128, 57, 1.0),
+		rgba(37, 128, 57, 0.35) 2%,
+		rgba(37, 128, 57, 0.1)
+	);
+}
+
+.yellow-gradient {
+	background-image: linear-gradient(
+		rgba(245, 190, 65, 1.0),
+		rgba(245, 190, 65, 0.35) 2%,
+		rgba(245, 190, 65, 0.1)
+	);
+}
+
+
+
 #menu-network {
-	width: 600px;
-	height: 400px;
+	width: 100vw;
+	height: 20vh;
 	border: 1px solid lightgray;
 }
 
 #chapter-container {
 	position: relative;
+	margin: 0 2vw 0 2vw;
 }
 
 .chapters {
@@ -28,4 +66,41 @@ h2 {
 	top: 0;
 	display: none;
 	opacity: 0;
+}
+
+/****portrait orientations****/
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px) {
+	body {
+		font-size: 4vw;
+	}
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width : 480px) {
+	body {
+		font-size: 2.8vw;
+	}
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+	body {
+		font-size: 2.2vw;
+	}
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+	body {
+		font-size: 1.5vw;
+	}
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+	body {
+		font-size: 1.8vw;
+	}
 }
