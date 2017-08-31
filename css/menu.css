@@ -1,0 +1,31 @@
+/********************* planet menu ************************/
+
+body {
+	background-color: #1d314b;
+}
+
+#planet {
+	background-image: url('../img/planetBg.png');
+	width: 100vw;
+	height: 100vh;
+}
+
+.planet-img {
+	position: relative;
+	display: none;
+	width: 20vw;
+	height: 20vw;
+}
+
+#container {
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+}
+
+#planet-draggable3, #planet-draggable2, #planet-draggable1 {
+	position: absolute;
+	/*border: 1px solid black; */
+	z-index: 100;
+	width: 20vw; /* matches the width of the image */
+}
