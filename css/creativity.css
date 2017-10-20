@@ -1,7 +1,36 @@
+/*
+colors
+aqua darkest to lightest
+*/
+.aqua1 {
+	background-color: #0E5C66;
+	color: #E3FCFF;
+}
+
+.aqua2 {
+	background-color: #2B7882;
+	color: #E3FCFF;
+}
+
+.aqua3 {
+	background-color: #32A8B8;
+	color: #E3FCFF;
+}
+
+.aqua4 {
+	background-color: #3ED2E5;
+}
+
+.aqua5 {
+	background-color: #96F3FF;
+}
+
+
 body {
 	font-family: 'Raleway', sans-serif;
 	font-size: 3.5vw;
 	color: #05343B;
+	margin: 0;
 }
 
 h1 {
@@ -15,6 +44,28 @@ h2 {
 
 }
 
+p {
+	border-radius: 3vmin;
+	padding: 2vmin;
+	margin: 2vmin 4vmin;
+}
+
+.aqua {
+	background-color: rgba(49, 169, 184, 0.75);
+}
+
+.tomato {
+	background-color: rgba(207, 53, 33, 0.75);
+}
+
+.avocado {
+	background-color: rgba(37, 128, 57, 0.75);
+}
+
+.yellow {
+	background-color: rgba(245, 190, 65, 0.75);
+}
+
 .aqua-gradient {
 	background-image: linear-gradient(
 		rgba(49, 169, 184, 1.0),
@@ -25,9 +76,9 @@ h2 {
 
 .tomato-gradient {
 	background-image: linear-gradient(
-		rgba(207, 53, 33, 1.0),
-		rgba(207, 53, 33, 0.35) 2%,
-		rgba(207, 53, 33, 0.1)
+		rgba(207, 53, 33, 0.5),
+		rgba(207, 53, 33, 0.15) 2%,
+		rgba(207, 53, 33, 0.01)
 	);
 }
 
@@ -47,17 +98,56 @@ h2 {
 	);
 }
 
+/* all the descendants holding the controls are on the same z-index layer, at the very top */
+#menu-controls, #menu-display, #menu-display img {
+	z-index: 200;
+}
 
+/* all the descendants holding the vis network are on the same z-index layer, below the controls */
+/*#menu-network, #menu-network div {
+	z-index: 100;
+	position: fixed;
+}
 
 #menu-network {
 	width: 100vw;
-	height: 20vh;
+	height: 100vh;
 	border: 1px solid lightgray;
 }
 
-#chapter-container {
-	position: relative;
-	margin: 0 2vw 0 2vw;
+#menu-display img {
+	display: inline-block;
+	position: fixed;
+	width: 6vw;
+    margin-left: 92vw;
+}
+
+#separation-layer {
+	background-color: white;
+	opacity: 0.5;
+	height: 100vh;
+	width:	100vw;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 50;
+}*/
+
+/* this exists just to set a perspective so that the children
+will be able to have 3D transformations with this perspective */
+#perspective-container {
+	-webkit-perspective: 5000vw; /* Chrome, Safari, Opera */
+	perspective: 5000vw;
+}
+
+#current-chapter, #page-turn-btns {
+	/* seems like perspective is only needed on the parent, but have it here just in case */
+	-webkit-perspective: 5000vw; /* Chrome, Safari, Opera */
+    perspective: 5000vw;
+}
+
+#current-chapter {
+	/*border: 1px solid grey;*/
 }
 
 .chapters {
@@ -65,7 +155,86 @@ h2 {
 	left: 0;
 	top: 0;
 	display: none;
-	opacity: 0;
+	opacity: 0.2;
+	margin: 0;
+	padding: 0 1vmin;
+	z-index: 0;
+}
+
+#page-turn-btns {
+    position: fixed;
+    z-index: 1100;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+}
+
+#next-chapter-btn, #prev-chapter-btn {
+	position: fixed;
+	top: 30vh;
+	height: 20vh;
+	width: 5vw;
+	z-index: 1110;
+}
+
+#next-chapter-btn, #next-chapter-btn img {
+	left: 95%;
+	width: 5vw;
+}
+
+#prev-chapter-btn, #prev-chapter-btn img {
+	left: 0%;
+	width: 5vw;
+}
+
+
+#current-chapter {
+	z-index: 1000;
+}
+
+@keyframes prev-chapter-part1 {
+	from {
+		-webkit-transform: rotateY(0deg);
+		transform: rotateY(0deg);
+	}
+	to {
+		-webkit-transform: rotateY(-90deg);
+		transform: rotateY(-90deg);
+	}
+}
+
+@keyframes prev-chapter-part2 {
+	from {
+		-webkit-transform: rotateY(90deg);
+		transform: rotateY(90deg);
+	}
+	to {
+		-webkit-transform: rotateY(0deg);
+		transform: rotateY(0deg);
+	}
+}
+
+@keyframes next-chapter-part1 {
+	from {
+		-webkit-transform: rotateY(0deg);
+		transform: rotateY(0deg);
+	}
+	to {
+		-webkit-transform: rotateY(90deg);
+		transform: rotateY(90deg);
+	}
+}
+
+@keyframes next-chapter-part2 {
+	from {
+		-webkit-transform: rotateY(-90deg);
+		transform: rotateY(-90deg);
+	}
+	to {
+		-webkit-transform: rotateY(0deg);
+		transform: rotateY(0deg);
+	}
 }
 
 /****portrait orientations****/
