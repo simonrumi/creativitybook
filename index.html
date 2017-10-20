@@ -14,25 +14,45 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js"></script>
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.css" rel="stylesheet" type="text/css">
 
+	<!-- transit http://ricostacruz.com/jquery.transit/ -->
+	<!-- // <script src="scripts/transit.min.js"></script> -->
+
 	<!-- fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Raleway|Varela+Round" rel="stylesheet">
 
 	<!-- our scripts -->
-	<script src="scripts/creativity.js"></script>
+	<script src="scripts/creativity2.js"></script>
 	<link href="css/creativity.css" rel="stylesheet" type="text/css"></script>
 
 </head>
 <body>
-	<div>
-		<!-- menu -->
-		<div id="menu-network"></div>
-
-		<!-- chapters -->
-		<div id="chapter-container">
-			<div id="chapter-1010"  class="chapters aqua-gradient"></div>
-			<div id="chapter-1020" class="chapters tomato-gradient"></div>
-			<div id="chapter-2010" class="chapters avocado-gradient"></div>
-			<div id="chapter-2015" class="chapters yellow-gradient"></div>
+	<div id="perspective-container">
+		<div id="current-chapter">
+			<div class="chapter-text"></div>
+		</div>
+		<div id="page-turn-btns">
+			<div id="next-chapter-btn" onclick="chapterController.showNextChapter()">
+				<img src="img/BrushedMetalPanel.png">
+			</div>
+			<div id="prev-chapter-btn" onclick="chapterController.showPrevChapter()">
+				<img src="img/BrushedMetalPanel.png">
+			</div>
 		</div>
 	</div>
+
+	<!-- menu -->
+	<!-- <div id="menu-controls">
+		<div id="menu-display"><img src="img/shrink-btn.png"></div>
+	</div>
+	<div id="menu-network"></div>
+
+	<div id="separation-layer"></div>
+
+	<div id="chapter-1010" class="chapters aqua-gradient"></div>
+	<div id="chapter-1020" class="chapters avocado-gradient"></div>
+	<div id="chapter-2010" class="chapters tomato-gradient"></div>
+	<div id="chapter-2015" class="chapters yellow-gradient"></div> -->
+
+
+
 </body>
