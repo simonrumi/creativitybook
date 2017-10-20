@@ -96,8 +96,10 @@ function Planet(divId) {
 		this.y = $(this.name).offset().top;
 	}
 	
-	this.setPosition = function(x,y, centerIt) {
+	this.setPosition = function(newPosition, centerIt) {
 		var xPercent, yPercent, xCenterOffset, yCenterOffset, currentOffset;
+		var x = newPosition.left;
+		var y = newPosition.top;
 		
 		// convert e.g. '20%' to 20 and calculate the actual pixels for 20%
 		if (typeof x == 'string' && (x.match('%').length > 0 || x.match('vw').length > 0)) {
@@ -137,7 +139,7 @@ var planetController = (function() {
 			for (i=0; i<_planetsToMake.length; i++) {
 				newPlanet = new Planet(_planetsToMake[i].name)
 				_planets.push(newPlanet);
-				newPlanet.setPosition(_planetsToMake[i].position.left, _planetsToMake[i].position.top)
+				newPlanet.setPosition(_planetsToMake[i].position)
 			}
 			
 			for (i in _planets) {
@@ -191,7 +193,9 @@ var planetController = (function() {
 		adjustPosition: function(planet, comparisonPlanet) {
 			var updatedPoint;
 			var originalPoint = {left: planet.x, top: planet.y};
+			planet.updatePosition(); // make sure we have the right position stored before doing any calcs with it
 			if (comparisonPlanet) {
+				comparisonPlanet.updatePosition();
 				updatedPoint = this.checkPlanetDistanceConstraints(planet, comparisonPlanet);
 			} else {
 				updatedPoint = this.checkWindowConstraints(planet);
@@ -219,25 +223,46 @@ var planetController = (function() {
 			} 
 		},
 		
+		/// QQQ TODO - 
+		/// These various schemes aren't working.
+		/// need some real network math to do it
+		/// go back to writing
+		/// make the menu simpler
 		adjustPositionOfAllPlanets: function(planetMovedByUser) {
 			var i, planetA, planetB, originalPointA, originalPointB, updatedPointA, updatedPointB, windowConstrainedPointA, windowConstrainedPointB;
+			var storedPoints = {};
 			for (i in _links) {
 				planetA = _links[i].planetA;
 				planetB = _links[i].planetB;
-				originalPointA = {left: planetA.x, top: planetA.y};
-				originalPointB = {left: planetB.x, top: planetB.y};
+					
+		/// QQQQ put this check of StorePoints into the 2nd iteration
+				// record the current position of the planets A & B, 
+				// but if we already have the points in storedPoints, use them, 
+				// otherwise use the actual position of planets A & B
+				if (storedPoints[planetA.name]) {
+					originalPointA = storedPoints[planetA.name];
+				} else {
+					planetA.updatePosition(); // make sure we have the right position stored before doing any calcs on it
+					originalPointA = {left: planetA.x, top: planetA.y};
+				}
+				if (storedPoints[planetB.name]) {
+					originalPointB = storedPoints[planetB.name];
+				} else {
+					planetB.updatePosition(); // make sure we have the right position stored before doing any calcs on it				
+					originalPointB = {left: planetB.x, top: planetB.y};
+				}
 				
 				/// TODO - make these 2 similar if blocks into a function
-				
 				// update point A first
 				if (planetA != planetMovedByUser) {
 					updatedPointA = this.checkPlanetDistanceConstraints(planetA, planetB);
 					windowConstrainedPointA = this.checkWindowConstraints(planetA, updatedPointA);
 					
 					if (!this.pointEqualityTest(windowConstrainedPointA, originalPointA)) {
-						planetA.positionUpdated = true;
+						planetA.positionUpdated = true; /// TODO are we even using this now???
 						this.addTransition(planetA, windowConstrainedPointA.left, windowConstrainedPointA.top);
 					}
+					storedPoints[planetA.name] = windowConstrainedPointA;
 				}
 				
 				// now update B 
@@ -246,11 +271,57 @@ var planetController = (function() {
 					windowConstrainedPointB = this.checkWindowConstraints(planetB, updatedPointB);
 				
 					if (!this.pointEqualityTest(windowConstrainedPointB, originalPointB)) {
-						planetB.positionUpdated = true;
+						planetB.positionUpdated = true; /// TODO are we even using this now???
 						this.addTransition(planetB, windowConstrainedPointB.left, windowConstrainedPointB.top);
 					}
 				}
+				storedPoints[planetB.name] = windowConstrainedPointB;
+			}
+			
+			// iteration 2
+			/// TOOD make this iteration work properly
+			/// then refactor all kinds of excess code in this function
+			for (i in _links) {
+				planetA = _links[i].planetA;
+				planetB = _links[i].planetB;
+				
+				if (storedPoints[planetA.name]) {
+					originalPointA = storedPoints[planetA.name];
+				} else {
+					planetA.updatePosition(); // make sure we have the right position stored before doing any calcs on it
+					originalPointA = {left: planetA.x, top: planetA.y};
+				}
+				if (storedPoints[planetB.name]) {
+					originalPointB = storedPoints[planetB.name];
+				} else {
+					planetB.updatePosition(); // make sure we have the right position stored before doing any calcs on it				
+					originalPointB = {left: planetB.x, top: planetB.y};
+				}
+				
+				/// TODO - make these 2 similar if blocks into a function
+				// update point A first
+				if (planetA != planetMovedByUser) {
+					updatedPointA = this.checkPlanetDistanceConstraints(planetA, planetB);
+					windowConstrainedPointA = this.checkWindowConstraints(planetA, updatedPointA);
 					
+					if (!this.pointEqualityTest(windowConstrainedPointA, originalPointA)) {
+						planetA.positionUpdated = true; /// TODO are we even using this now???
+						this.addTransition(planetA, windowConstrainedPointA.left, windowConstrainedPointA.top);
+					}
+					storedPoints[planetA.name] = windowConstrainedPointA;
+				}
+				
+				// now update B 
+				if (planetB != planetMovedByUser) {
+					updatedPointB = this.checkPlanetDistanceConstraints(planetB, planetA);
+					windowConstrainedPointB = this.checkWindowConstraints(planetB, updatedPointB);
+				
+					if (!this.pointEqualityTest(windowConstrainedPointB, originalPointB)) {
+						planetB.positionUpdated = true; /// TODO are we even using this now???
+						this.addTransition(planetB, windowConstrainedPointB.left, windowConstrainedPointB.top);
+					}
+				}
+				storedPoints[planetB.name] = windowConstrainedPointB;
 			}
 		},
 		
@@ -330,12 +401,12 @@ var planetController = (function() {
 			var pointToMove, updatedPoint, comparisonPoint, planetToMoveNewXpos, planetToMoveNewYpos, distanceBetweenPlanets, deltaX, deltaY;
 			var newPositionProposed = proposedXpos && proposedYpos ? true : false;
 			if (!newPositionProposed) {
-				planetToMove.updatePosition();
+				//planetToMove.updatePosition(); /// TODO should do this before calling this fucntion, calling it here means it is called over & over
 				pointToMove = {left: planetToMove.x, top: planetToMove.y};		
 			} else {
 				pointToMove = {left: proposedXpos, top: proposedYpos}
 			}
-			comparisonPlanet.updatePosition();
+			//comparisonPlanet.updatePosition();  /// TODO should do this before calling this fucntion, calling it here means it is called over & over
 			comparisonPoint = {left: comparisonPlanet.x, top: comparisonPlanet.y};
 			updatedPoint = this.adjustDistanceIfNecessary(pointToMove, comparisonPoint,  planetToMove.minDistanceFromNeighbor, planetToMove.maxDistanceFromNeighbor);
 			return updatedPoint;
